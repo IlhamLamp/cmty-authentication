@@ -3,9 +3,9 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import redisClient from '../config/redis_client';
 import { accessToken } from '../config/token';
 
-const verifyToken = (token: string, secret: string): Promise<JwtPayload | null> => {
+const verifyToken = (refresh_token: string, refresh_secret: string): Promise<JwtPayload | null> => {
     return new Promise((resolve, reject) => {
-        jwt.verify(token, secret, (err, decoded) => {
+        jwt.verify(refresh_token, refresh_secret, (err, decoded) => {
             if (err) {
                 return reject(err);
             }
@@ -18,7 +18,7 @@ export const RefreshAccessToken = async (req: express.Request, res: express.Resp
     const { refresh_token } = req.body;
 
     if (!refresh_token) {
-        res.status(403).json({ message: "Refresh token required" });
+        res.status(403).json({ message: "Refresh token required", status: 403 });
         return; 
     }
 
@@ -29,27 +29,25 @@ export const RefreshAccessToken = async (req: express.Request, res: express.Resp
 
     try {
         const user = await verifyToken(refresh_token, refresh_secret);
-        console.log("Decoded user from token:", user);
 
         if (!user) {
-            res.status(403).json({ message: "Invalid refresh token" });
+            res.status(403).json({ message: "Invalid refresh token", status: 403 });
             return; 
         }
-
-        const storedRefreshToken = await redisClient.get(user.id.toString());
-        console.log("Stored Refresh Token in Redis:", storedRefreshToken);
+        const uid = user.id.toString();
+        const storedRefreshToken = await redisClient.get(uid);
+        
         if (storedRefreshToken !== refresh_token) {
-            console.log("Mismatched refresh token");
-            res.status(403).json({ message: "Invalid refresh token" });
+            res.status(403).json({ message: "Invalid refresh token", status: 403 });
             return; 
         }
 
         const token = accessToken(user.id, user.email);
 
-        res.status(200).json({ token });
+        res.status(200).json({ message: "Refresh token successfully", token, status: 200});
         return; 
     } catch (error) {
-        res.status(403).json({ message: "Invalid refresh token" });
-        return; 
+        res.status(500).json({ message: "Internal server error", error: error, status: 500 });
+        return;
     }
 };
