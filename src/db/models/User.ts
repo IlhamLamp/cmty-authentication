@@ -3,8 +3,6 @@ import connection from "../../config/db_connect";
 
 interface UserAttributes {
   id?: number,
-  first_name?: string,
-  last_name?: string,
   email?: string,
   password?: string,
   otp_code?: string,
@@ -19,8 +17,6 @@ export interface UserOutput extends Required<UserAttributes> { }
 
 class User extends Model<UserAttributes, UserInput> implements UserAttributes {
   public id!: number;
-  public first_name!: string;
-  public last_name!: string;
   public email!: string;
   public password!: string;
   public otp_code!: string;
@@ -36,14 +32,6 @@ User.init({
     autoIncrement: true,
     primaryKey: true,
     type: DataTypes.BIGINT,
-  },
-  first_name: {
-    allowNull: false,
-    type: DataTypes.STRING,
-  },
-  last_name: {
-    allowNull: true,
-    type: DataTypes.STRING,
   },
   email: {
     allowNull: false,

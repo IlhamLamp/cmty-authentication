@@ -1,7 +1,6 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 
-// Middleware khusus untuk mencegah akses route jika pengguna sudah terautentikasi
 export const PreventAuthenticatedAccess = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const authHeader = req.headers.authorization;
 
