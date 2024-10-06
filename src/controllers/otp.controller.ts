@@ -9,7 +9,7 @@ export const VerifyOTP = async (req: express.Request, res: express.Response): Pr
         // validate
         const validation = await OTPValidation(req.body);
         if (validation.error !== null) {
-            res.status(400).json({ message: "Validation errors", error: validation.error, status: 400 });
+            res.status(400).json({ message: validation.error, error: "Validation errors", status: 400 });
             return;
         }
         // update user
