@@ -1,13 +1,15 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import router from "./routes/v1/routes";
 import connection from "./config/db_connect";
+import cors from 'cors';
 
 dotenv.config();
 
 const app: Express = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api/v1/auth', router);

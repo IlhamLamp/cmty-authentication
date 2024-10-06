@@ -17,8 +17,8 @@ const RegisterValidation = async (data: {
         return "Invalid email address.";
     }
 
-    if (!password || !validator.isLength(password, { min: 6 })) {
-        return "Password must be at least 6 characters long.";
+    if (!password || !validator.isLength(password, { min: 8 })) {
+        return "Password must be at least 8 characters long.";
     }
 
     if (password !== confirmation_password) {

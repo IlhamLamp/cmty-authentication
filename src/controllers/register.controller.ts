@@ -11,7 +11,7 @@ export const RegisterAccount = async (req: express.Request, res: express.Respons
         // validate
         const validation = await RegisterValidation(req.body);
         if (validation) {
-            res.status(400).json({ message: "validation errors", error: validation, status: 400 });
+            res.status(400).json({ message: validation, error: "validation errors", status: 400 });
             return;
         }
         // otp 15 minutes
