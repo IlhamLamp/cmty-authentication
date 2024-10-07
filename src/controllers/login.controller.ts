@@ -25,7 +25,7 @@ export const Login = async (req: express.Request, res: express.Response) => {
 
         await redisClient.set(uid, refresh_token, { EX: 3 * 24 * 60 * 60 });
 
-        res.status(200).json({ message: "Login successfully", data: { token, refresh_token }, status: 200});
+        res.status(200).json({ message: "Login successfully", data: { id: user.id, email: user.email, token, refresh_token }, status: 200});
         return;
     } catch (error) {
         res.status(500).json({ message: "Internal server error", error: error, status: 500 });
