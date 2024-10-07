@@ -43,8 +43,8 @@ export const RefreshAccessToken = async (req: express.Request, res: express.Resp
         }
 
         const token = accessToken(user.id, user.email);
-
-        res.status(200).json({ message: "Refresh token successfully", token, status: 200});
+        console.log(token);
+        res.status(200).json({ message: "Refresh token successfully", token, data: { id: user.id, email: user.email}, status: 200});
         return; 
     } catch (error) {
         res.status(500).json({ message: "Internal server error", error: error, status: 500 });

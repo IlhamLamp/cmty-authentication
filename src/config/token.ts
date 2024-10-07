@@ -12,7 +12,7 @@ export const accessToken = (user_id: number, user_email: string) => {
     const token = jwt.sign(
         { id: user_id, email: user_email },
         secret,
-        { expiresIn: '15m'}
+        { expiresIn: '1h'}
     )
     return token;
 }
