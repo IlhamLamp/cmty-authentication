@@ -63,10 +63,10 @@ export const CheckValidityToken = async (req: express.Request, res: express.Resp
     }
     jwt.verify(token, accessToken, (err, decoded) => {
         if (err) {
-          res.status(401).json({ message: 'Token is invalid or expired', status: 401 });
+          res.status(401).json({ message: 'Token is invalid or expired', is_valid: false, data: null, status: 401 });
           return
         }
-        res.status(200).json({ message: 'Token is valid', data:decoded, status: 200 });
+        res.status(200).json({ message: 'Token is valid', is_valid: true, data:decoded, status: 200 });
         return
     });
 }
