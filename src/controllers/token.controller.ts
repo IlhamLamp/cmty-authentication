@@ -43,7 +43,6 @@ export const RefreshAccessToken = async (req: express.Request, res: express.Resp
         }
 
         const token = accessToken(user.id, user.email);
-        console.log(token);
         res.status(200).json({ message: "Refresh token successfully", token, data: { id: user.id, email: user.email}, status: 200});
         return; 
     } catch (error) {
@@ -51,3 +50,23 @@ export const RefreshAccessToken = async (req: express.Request, res: express.Resp
         return;
     }
 };
+
+export const CheckValidityToken = async (req: express.Request, res: express.Response) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+        res.status(401).json({ message: "Token is missing", status: 401 });
+        return; 
+    }
+    const accessToken = process.env.JWT_ACCESS_SECRET;
+    if (!accessToken) {
+        throw new Error('JWT_ACCESS_SECRET is not defined');
+    }
+    jwt.verify(token, accessToken, (err, decoded) => {
+        if (err) {
+          res.status(401).json({ message: 'Token is invalid or expired', status: 401 });
+          return
+        }
+        res.status(200).json({ message: 'Token is valid', data:decoded, status: 200 });
+        return
+    });
+}
