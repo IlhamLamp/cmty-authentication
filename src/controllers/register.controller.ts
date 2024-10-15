@@ -23,8 +23,9 @@ export const RegisterAccount = async (req: express.Request, res: express.Respons
         const newUser = await User.create({ 
             email, password: hashedPassword, otp_code: otp, otp_expiration
         });
+        const user = newUser.toJSON();
         // send
-        res.status(201).json({ message: "User registered successfully. Please verify OTP sent to your email. ", user: newUser, status: 201 });
+        res.status(201).json({ message: "User registered successfully. Please verify OTP sent to your email. ", user: {...user, otp_code: ''}, status: 201 });
         return;
     } catch (error) {
         res.status(500).json({ message: "Internal server error", error: error, status: 500 });
