@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
-import { Sequelize } from 'sequelize';
+import dotenv from "dotenv";
+import { Sequelize } from "sequelize";
 
 dotenv.config();
 
@@ -10,8 +10,8 @@ const dbPassword = process.env.DB_PASSWORD;
 const dbDialect = "mysql";
 
 const connection = new Sequelize(dbName, dbUsername, dbPassword, {
-    host: dbHost,
-    dialect: dbDialect
+  host: dbHost,
+  dialect: dbDialect,
 });
 
 export default connection;

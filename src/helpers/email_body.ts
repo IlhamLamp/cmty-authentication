@@ -1,6 +1,5 @@
-export const EmailBody = ( otp: string ) => {
-    const body = 
-        `<div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4;">
+export const EmailBody = (otp: string) => {
+  const body = `<div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4;">
             <div style="max-width: 600px; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
                 <h2 style="text-align: center; color: #424874;">COMMUNTITY</h2>
                 <p style="font-size: 16px;">Hello there,</p>
@@ -17,6 +16,6 @@ export const EmailBody = ( otp: string ) => {
             <div style="text-align: center; font-size: 12px; color: #999; padding-top: 20px;">
                 <p>&copy; 2024 Your Company. All rights reserved.</p>
             </div>
-        </div>`
-    return body;
-}
+        </div>`;
+  return body;
+};

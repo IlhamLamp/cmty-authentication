@@ -2,30 +2,30 @@ import validator from "validator";
 import User from "../db/models/User";
 
 const RegisterValidation = async (data: {
-    email: string;
-    password: string;
-    confirmation_password: string;
+  email: string;
+  password: string;
+  confirmation_password: string;
 }): Promise<string | null> => {
-    const { email, password, confirmation_password } = data;
+  const { email, password, confirmation_password } = data;
 
-    const userExist = await User.findOne({ where: { email } });
-    if (userExist) {
-        return "Email already registered.";
-    }
+  const userExist = await User.findOne({ where: { email } });
+  if (userExist) {
+    return "Email already registered.";
+  }
 
-    if (!email || !validator.isEmail(email)) {
-        return "Invalid email address.";
-    }
+  if (!email || !validator.isEmail(email)) {
+    return "Invalid email address.";
+  }
 
-    if (!password || !validator.isLength(password, { min: 8 })) {
-        return "Password must be at least 8 characters long.";
-    }
+  if (!password || !validator.isLength(password, { min: 8 })) {
+    return "Password must be at least 8 characters long.";
+  }
 
-    if (password !== confirmation_password) {
-        return "Password and confirmation password must be the same.";
-    }
+  if (password !== confirmation_password) {
+    return "Password and confirmation password must be the same.";
+  }
 
-    return null;
+  return null;
 };
 
 export default RegisterValidation;
