@@ -5,6 +5,7 @@ interface UserAttributes {
   id?: number;
   email?: string;
   password?: string;
+  google_id?: string;
   otp_code?: string;
   otp_expiration?: Date;
   is_verified?: boolean;
@@ -19,6 +20,7 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
   public id!: number;
   public email!: string;
   public password!: string;
+  public google_id!: string;
   public otp_code!: string;
   public otp_expiration!: Date;
   public is_verified!: boolean;
@@ -43,7 +45,11 @@ User.init(
       },
     },
     password: {
-      allowNull: false,
+      allowNull: true,
+      type: DataTypes.STRING,
+    },
+    google_id: {
+      allowNull: true,
       type: DataTypes.STRING,
     },
     otp_code: {

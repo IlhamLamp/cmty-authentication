@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('User', {
+    await queryInterface.createTable("User", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       email: {
         allowNull: false,
@@ -15,10 +15,14 @@ module.exports = {
         type: Sequelize.STRING,
         validate: {
           isEmail: true,
-        }
+        },
       },
       password: {
-        allowNull: false,
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
+      google_id: {
+        allowNull: true,
         type: Sequelize.STRING,
       },
       otp_code: {
@@ -36,16 +40,16 @@ module.exports = {
       created_at: {
         allowNull: true,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updated_at: {
         allowNull: true,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-      }
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('User');
-  }
+    await queryInterface.dropTable("User");
+  },
 };

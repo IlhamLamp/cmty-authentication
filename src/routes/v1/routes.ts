@@ -8,6 +8,10 @@ import {
 } from "../../controllers/token.controller";
 import { Logout } from "../../controllers/logout.controller";
 import { PreventAuthenticatedAccess } from "../../middleware/protected_route";
+import {
+  GoogleCallback,
+  GoogleLogin,
+} from "../../controllers/google_oauth.controller";
 
 const router = express.Router();
 
@@ -19,6 +23,8 @@ router.post("/resend-otp", PreventAuthenticatedAccess, ResendOTP);
 // user-action
 router.post("/login", Login);
 router.post("/logout", Logout);
+router.get("/google", GoogleLogin);
+router.get("/google/callback", GoogleCallback);
 
 // token
 router.post("/refresh-token", RefreshAccessToken);
