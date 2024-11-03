@@ -9,3 +9,15 @@ export type TUsers = {
   created_at: Date;
   updated_at: Date;
 };
+
+export type TOAuthCallbackResponse = {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  full_name: string;
+  profile_picture: string;
+  token: string;
+  refresh_token: string;
+  created: boolean;
+};

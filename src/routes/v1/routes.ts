@@ -9,6 +9,7 @@ import {
 import { Logout } from "../../controllers/logout.controller";
 import { PreventAuthenticatedAccess } from "../../middleware/protected_route";
 import {
+  GetOauthLoginSuccessData,
   GoogleCallback,
   GoogleLogin,
 } from "../../controllers/google_oauth.controller";
@@ -25,6 +26,7 @@ router.post("/login", Login);
 router.post("/logout", Logout);
 router.get("/google", GoogleLogin);
 router.get("/google/callback", GoogleCallback);
+router.get("/login/success", GetOauthLoginSuccessData);
 
 // token
 router.post("/refresh-token", RefreshAccessToken);
