@@ -6,6 +6,7 @@ import { accessToken, refreshToken } from "../config/token";
 import redisClient from "../config/redis_client";
 import { decodeEmail, encodeEmail } from "../helpers/encrypt";
 import { TOAuthCallbackResponse } from "../types/user";
+import { APP_CLIENT } from "../utils/constant";
 
 dotenv.config();
 
@@ -28,7 +29,7 @@ export const GoogleCallback = async (
   const code = req.query.code as string;
 
   if (!code) {
-    res.redirect("http://localhost:3000/login");
+    res.redirect(`${APP_CLIENT}/login`);
     return;
   }
 
@@ -77,6 +78,8 @@ export const GoogleCallback = async (
       created,
     };
 
+    console.log(data);
+
     const encodedEmail = encodeEmail(user.email);
     const redisEmailCallback: string = payload.email?.toString() ?? user.email;
 
@@ -84,9 +87,11 @@ export const GoogleCallback = async (
       EX: 1 * 24 * 60 * 60,
     });
 
-    res.redirect(
-      `http://localhost:3000/auth/login/success?callback=${encodedEmail}`
-    );
+    if (!created) {
+      res.redirect(`${APP_CLIENT}/auth/login/success?callback=${encodedEmail}`);
+      return;
+    }
+    res.redirect(`${APP_CLIENT}/auth/login/redirect?callback=${encodedEmail}`);
     return;
   } catch (error) {
     console.error("Error during Google authentication:", error);

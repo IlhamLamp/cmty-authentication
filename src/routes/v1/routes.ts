@@ -21,11 +21,12 @@ router.post("/register", PreventAuthenticatedAccess, RegisterAccount);
 router.post("/verify", PreventAuthenticatedAccess, VerifyOTP);
 router.post("/resend-otp", PreventAuthenticatedAccess, ResendOTP);
 
-// user-action
+// user-action-auth
 router.post("/login", Login);
 router.post("/logout", Logout);
 router.get("/google", GoogleLogin);
 router.get("/google/callback", GoogleCallback);
+// router.get("/login/redirect");
 router.get("/login/success", GetOauthLoginSuccessData);
 
 // token

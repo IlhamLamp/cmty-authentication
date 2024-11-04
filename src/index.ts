@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import router from "./routes/v1/routes";
 import connection from "./config/db_connect";
 import cors from "cors";
+import { APP_CLIENT, APP_NAME, PORT } from "./utils/constant";
 
 dotenv.config();
 
@@ -11,11 +12,13 @@ const app: Express = express();
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    origin: APP_CLIENT,
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
     credentials: true,
   })
 );
+app.options("*", cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use("/api/v1/auth", router);
@@ -26,9 +29,6 @@ app.get("/", (req: express.Request, res: express.Response) => {
   });
   return;
 });
-
-const PORT = process.env.APP_PORT ?? 3000;
-const APP_NAME = process.env.APP_NAME ?? "MyApp";
 
 connection
   .sync()
