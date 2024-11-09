@@ -3,10 +3,10 @@ import express from "express";
 import client from "../config/google_oauth";
 import User from "../db/models/User";
 import { accessToken, refreshToken } from "../config/token";
-import redisClient from "../config/redis_client";
 import { decodeEmail, encodeEmail } from "../helpers/encrypt";
 import { TOAuthCallbackResponse } from "../types/user";
 import { APP_CLIENT } from "../utils/constant";
+import { redisClient } from "../config/redis_client";
 
 dotenv.config();
 
@@ -77,8 +77,6 @@ export const GoogleCallback = async (
       refresh_token,
       created,
     };
-
-    console.log(data);
 
     const encodedEmail = encodeEmail(user.email);
     const redisEmailCallback: string = payload.email?.toString() ?? user.email;

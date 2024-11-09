@@ -2,7 +2,7 @@ import express from "express";
 import User from "../db/models/User";
 import { comparePassword } from "../helpers/password_hash";
 import { accessToken, refreshToken } from "../config/token";
-import redisClient from "../config/redis_client";
+import { redisClient } from "../config/redis_client";
 
 export const Login = async (req: express.Request, res: express.Response) => {
   try {
@@ -29,13 +29,11 @@ export const Login = async (req: express.Request, res: express.Response) => {
 
     await redisClient.set(uid, refresh_token, { EX: 3 * 24 * 60 * 60 });
 
-    res
-      .status(200)
-      .json({
-        message: "Login successfully",
-        data: { id: user.id, email: user.email, token, refresh_token },
-        status: 200,
-      });
+    res.status(200).json({
+      message: "Login successfully",
+      data: { id: user.id, email: user.email, token, refresh_token },
+      status: 200,
+    });
     return;
   } catch (error) {
     res

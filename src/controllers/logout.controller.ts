@@ -1,6 +1,6 @@
 import express from "express";
-import redisClient from "../config/redis_client";
 import jwt from "jsonwebtoken";
+import { redisClient } from "../config/redis_client";
 
 export const Logout = async (req: express.Request, res: express.Response) => {
   const authHeader = req.headers.authorization;

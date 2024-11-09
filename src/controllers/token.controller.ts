@@ -1,7 +1,7 @@
 import express from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import redisClient from "../config/redis_client";
 import { accessToken } from "../config/token";
+import { redisClient } from "../config/redis_client";
 
 const verifyToken = (
   refresh_token: string,

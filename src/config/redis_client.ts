@@ -37,6 +37,13 @@ const resetIdleTimer = () => {
   resetIdleTimer();
 })();
 
+async function ensureConnected() {
+  if (!redisClient.isOpen) {
+    await redisClient.connect();
+    console.log("Redis connection opened on demand");
+  }
+}
+
 const redisSafeShutdown = async () => {
   try {
     await redisClient.quit();
@@ -51,4 +58,4 @@ const redisSafeShutdown = async () => {
 process.on("SIGINT", redisSafeShutdown);
 process.on("SIGTERM", redisSafeShutdown);
 
-export default redisClient;
+export { redisClient, ensureConnected };
