@@ -82,14 +82,24 @@ export const RedirectSetAccountPassword = async (
 
     const data: TOAuthCallbackResponse = JSON.parse(userOauthLoginData);
     const hashedPassword = await hashPassword(password);
+    console.log(data);
 
-    await redisClient.set(data.id.toString(), data.refresh_token, {
-      EX: 3 * 24 * 60 * 60,
-    });
+    await User.upsert(
+      {
+        id: data.id,
+        email: data.email,
+        password: hashedPassword,
+        is_verified: true,
+      },
+      {
+        returning: true,
+        conflictFields: ["email"],
+      }
+    );
 
-    res.status(200).json({
-      status: 200,
-      message: "User data retrieved successfully",
+    res.status(201).json({
+      status: 201,
+      message: "Successfully update user password",
       data,
     });
     return;
@@ -97,10 +107,8 @@ export const RedirectSetAccountPassword = async (
     console.error("Error during decoding:", error);
     res.status(500).json({
       status: 500,
-      message: "Failed to retrieve user data",
+      message: "Failed to update user password",
     });
     return;
-  } finally {
-    await redisClient.del(decodedCallback);
   }
 };

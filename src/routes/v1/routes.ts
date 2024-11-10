@@ -30,7 +30,7 @@ router.post("/login", ensureRedisConnection, Login);
 router.post("/logout", ensureRedisConnection, Logout);
 router.get("/google", ensureRedisConnection, GoogleLogin);
 router.get("/google/callback", ensureRedisConnection, GoogleCallback);
-router.get(
+router.post(
   "/login/redirect",
   ensureRedisConnection,
   RedirectSetAccountPassword
