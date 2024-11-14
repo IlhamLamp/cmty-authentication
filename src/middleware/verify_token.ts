@@ -22,7 +22,7 @@ const VerifyToken = (
   }
   try {
     const decoded = jwt.verify(token, secret);
-    req.user = decoded;
+    (req as any).user = decoded;
     next();
   } catch (error) {
     res.status(403).json({
