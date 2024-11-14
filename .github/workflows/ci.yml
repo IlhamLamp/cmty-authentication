@@ -1,4 +1,4 @@
-name: Continuous Integration Docker Image
+name: Continuous Integration
 
 on:
   push:
