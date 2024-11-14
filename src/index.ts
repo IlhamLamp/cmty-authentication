@@ -30,7 +30,6 @@ app.get("/", (req: express.Request, res: express.Response) => {
   return;
 });
 
-//
 connection
   .sync()
   .then(() => {
