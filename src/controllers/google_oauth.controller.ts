@@ -68,6 +68,7 @@ export const GoogleCallback = async (
 
     const data = {
       id: user.id,
+      google_id: payload.sub,
       email: user.email,
       first_name: payload.given_name,
       last_name: payload.family_name,
@@ -128,6 +129,20 @@ export const GetOauthLoginSuccessData = async (
     }
 
     const data: TOAuthCallbackResponse = JSON.parse(userOauthLoginData);
+
+    await User.upsert(
+      {
+        email: data.email,
+        google_id: data.google_id,
+        is_verified: true,
+        updated_at: new Date(),
+      },
+      {
+        returning: true,
+        conflictFields: ["email"],
+      }
+    );
+
     await redisClient.set(data.id.toString(), data.refresh_token, {
       EX: 3 * 24 * 60 * 60,
     });

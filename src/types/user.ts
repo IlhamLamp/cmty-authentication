@@ -12,6 +12,7 @@ export type TUsers = {
 
 export type TOAuthCallbackResponse = {
   id: number;
+  google_id: string;
   email: string;
   first_name: string;
   last_name: string;

@@ -14,7 +14,7 @@ export const RegisterAccount = async (
 ): Promise<void> => {
   try {
     const { email, password, confirmation_password } = req.body;
-    // validate
+
     const validation = await RegisterValidation(req.body);
     if (validation) {
       res
@@ -22,11 +22,11 @@ export const RegisterAccount = async (
         .json({ message: validation, error: "validation errors", status: 400 });
       return;
     }
-    // otp 15 minutes
+
     const otp = await generateOTP();
     const otp_expiration = new Date(Date.now() + 15 * 60 * 1000);
     await sendOTPEmail(email, otp);
-    // hash
+
     const hashedPassword = await hashPassword(password);
     const newUser = await User.create({
       email,
@@ -35,7 +35,7 @@ export const RegisterAccount = async (
       otp_expiration,
     });
     const user = newUser.toJSON();
-    // send
+
     res.status(201).json({
       message:
         "User registered successfully. Please verify OTP sent to your email. ",
@@ -64,9 +64,11 @@ export const RedirectSetAccountPassword = async (
     return;
   }
   if (password !== confirmation_password) {
-    res
-      .status(400)
-      .json({ status: 400, message: "Password and confirmation must same" });
+    res.status(400).json({
+      status: 400,
+      message: "Password and confirmation password must be same",
+    });
+    return;
   }
   const decodedCallback = decodeEmail(callback as string);
   try {
@@ -82,7 +84,6 @@ export const RedirectSetAccountPassword = async (
 
     const data: TOAuthCallbackResponse = JSON.parse(userOauthLoginData);
     const hashedPassword = await hashPassword(password);
-    console.log(data);
 
     await User.upsert(
       {
