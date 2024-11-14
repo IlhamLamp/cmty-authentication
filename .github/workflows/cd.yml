@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, authentication-runner]
+    runs-on: authentication-runner
     steps:
       - name: Pull docker image
         run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/authentication:latest
