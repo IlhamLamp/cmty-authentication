@@ -1,0 +1,30 @@
+name: Continuous Integration Docker Image
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+      
+    - name: Build the Docker image
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/authentication:latest
+
+    - name: Push to Dockerhub
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/authentication:latest
+
