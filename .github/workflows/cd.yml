@@ -41,4 +41,4 @@ jobs:
           export DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
 
           echo "Starting Docker Compose..."
-          docker-compose up -d --remove-orphans
+          docker-compose --env-file .env up -d --remove-orphans
