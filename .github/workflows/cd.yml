@@ -21,16 +21,16 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Pull authentication docker image
-        run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/authentication:latest
+        run: docker pull ${{ secrets.DOCKER_USERNAME }}/authentication:latest
 
       - name: Remove old authentication container
-        run: sudo docker rm -f authentication-container || true
+        run: docker rm -f authentication-container || true
 
       - name: Remove old MySQL container
-        run: sudo docker rm -f mysql-container || true
+        run: docker rm -f mysql-container || true
 
       - name: Remove old images
-        run: sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/authentication:latest || true
+        run: docker rmi ${{ secrets.DOCKER_USERNAME }}/authentication:latest || true
 
       - name: Create .env file for Docker Compose
         run: |
