@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: ${{ secrets.DB_ROOT_PASSWORD }}
+      MYSQL_DATABASE: ${{ secrets.DB_NAME }}
+      MYSQL_USER: ${{ secrets.DB_USER }}
+      MYSQL_PASSWORD: ${{ secrets.DB_PASSWORD }}
+    ports:
+      - "3306:3306"
+    networks:
+      - my_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+
+  authentication:
+    image: ${{ secrets.DOCKER_USERNAME }}/authentication:latest
+    container_name: authentication-container
+    ports:
+      - "3001:3001"
+    environment:
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+    depends_on:
+      - mysql
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
