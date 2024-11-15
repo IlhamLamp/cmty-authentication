@@ -19,7 +19,7 @@ services:
       retries: 5
 
   authentication:
-    image: ${{ secrets.DOCKER_USERNAME }}/authentication:latest
+    image: ${DOCKER_USERNAME}/authentication:latest
     container_name: authentication-container
     ports:
       - "3001:3001"
