@@ -5,10 +5,10 @@ services:
     image: mysql:8
     container_name: mysql-container
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${DB_NAME}
-      - MYSQL_USER=${DB_USERNAME}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3306:3306"
     networks:
@@ -17,6 +17,8 @@ services:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       retries: 5
+    volumes:
+      - mysql_data:/var/lib/mysql
 
   authentication:
     image: ${DOCKER_USERNAME}/authentication:latest
@@ -36,10 +38,14 @@ services:
       MAIL_PORT: ${MAIL_PORT}
       MAIL_HOST: ${MAIL_HOST}
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     networks:
       - my_network
 
 networks:
   my_network:
     driver: bridge
+
+volumes:
+  mysql_data:
