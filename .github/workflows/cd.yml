@@ -22,7 +22,7 @@ jobs:
 
       - name: Create .env file for Docker Compose
         run: |
-          echo "DB_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" > .env
+          echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" > .env
           echo "DB_HOST=${{ secrets.DB_HOST }}" > .env
           echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
           echo "DB_USER=${{ secrets.DB_USERNAME }}" >> .env
@@ -46,7 +46,9 @@ jobs:
         run: docker rm -f mysql-container || true
 
       - name: Remove old images
-        run: docker rmi ${{ secrets.DOCKER_USERNAME }}/authentication:latest || true
+        run: |
+          echo "Removing old images..."
+          docker images -f "dangling=true" -q | xargs --no-run-if-empty docker rmi
 
       - name: Deploy services with Docker Compose
         run: |
