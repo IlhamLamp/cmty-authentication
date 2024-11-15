@@ -24,9 +24,16 @@ jobs:
         run: |
           echo "DB_ROOT_PASSWORD=${{ secrets.DB_ROOT_PASSWORD }}" > .env
           echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
-          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USERNAME }}" >> .env
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
           echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> .env
+          echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> .env
+          echo "JWT_ACCESS_SECRET=${{ secrets.JWT_ACCESS_SECRET }}" >> .env
+          echo "JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}" >> .env
+          echo "MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> .env
+          echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> .env
+          echo "MAIL_PORT=${{ secrets.MAIL_PORT }}" >> .env
+          echo "MAIL_HOST=${{ secrets.MAIL_HOST }}" >> .env
 
       - name: Pull authentication docker image
         run: docker pull ${{ secrets.DOCKER_USERNAME }}/authentication:latest
