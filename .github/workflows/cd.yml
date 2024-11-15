@@ -20,15 +20,15 @@ jobs:
         run: |
           MYSQL_CONTAINER=$(sudo docker ps -q -f name=mysql-container)
           if [ -n "$MYSQL_CONTAINER" ]; then
-            echo "MySQL container is already running"
+              echo "MySQL container is already running"
           else
               sudo docker run -d --name mysql-container \
-              -e MYSQL_ROOT_PASSWORD=${{ secrets.DB_ROOT_PASSWORD }} \
-              -e MYSQL_DATABASE=${{ secrets.DB_HOST }} \
-              -e MYSQL_USER=${{ secrets.DB_USER }} \
-              -e MYSQL_PASSWORD=${{ secrets.DB_PASSWORD }} \
-              -p 3306:3306 \
-              mysql:8
+                -e MYSQL_ROOT_PASSWORD=${{ secrets.DB_ROOT_PASSWORD }} \
+                -e MYSQL_DATABASE=${{ secrets.DB_NAME }} \
+                -e MYSQL_USER=${{ secrets.DB_USER }} \
+                -e MYSQL_PASSWORD=${{ secrets.DB_PASSWORD }} \
+                -p 3306:3306 \
+                mysql:8
           fi
 
       - name: Run docker container
