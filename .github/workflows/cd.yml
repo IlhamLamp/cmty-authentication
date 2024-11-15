@@ -22,8 +22,8 @@ jobs:
 
       - name: Create .env file for Docker Compose
         run: |
-          echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" > .env
-          echo "DB_HOST=${{ secrets.DB_HOST }}" > .env
+          echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
           echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
           echo "DB_USER=${{ secrets.DB_USERNAME }}" >> .env
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
@@ -35,6 +35,9 @@ jobs:
           echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> .env
           echo "MAIL_PORT=${{ secrets.MAIL_PORT }}" >> .env
           echo "MAIL_HOST=${{ secrets.MAIL_HOST }}" >> .env
+
+      - name: Verify .env file
+        run: cat .env
 
       - name: Pull authentication docker image
         run: docker pull ${{ secrets.DOCKER_USERNAME }}/authentication:latest
@@ -53,6 +56,7 @@ jobs:
       - name: Deploy services with Docker Compose
         run: |
           echo "Starting Docker Compose..."
+          docker-compose --env-file .env config
           docker-compose --env-file .env up -d --remove-orphans
 
       - name: Clean up .env file
