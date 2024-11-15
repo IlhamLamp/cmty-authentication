@@ -17,9 +17,10 @@ jobs:
         run: sudo docker rm -f authentication-container || true
 
       - name: Start MySQL container
+        shell: bash
         run: |
           MYSQL_CONTAINER=$(sudo docker ps -q -f name=mysql-container)
-          if [ -n "$MYSQL_CONTAINER" ]; then
+          if [ "$MYSQL_CONTAINER" ]; then
               echo "MySQL container is already running"
           else
               sudo docker run -d --name mysql-container \
