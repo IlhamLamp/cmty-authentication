@@ -124,7 +124,8 @@
 
 ```json
 {
-  "password": "newPassword123"
+  "password": "newPassword123",
+  "confirmation_password": "newPassword123"
 }
 ```
 
