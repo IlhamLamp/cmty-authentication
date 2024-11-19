@@ -33,7 +33,7 @@ app.get("/", (req: express.Request, res: express.Response) => {
 connection
   .sync()
   .then(() => {
-    app.listen(PORT as number, "0.0.0.0", () => {
+    app.listen(PORT, () => {
       console.log(`🤝 ${APP_NAME} running on port ${PORT}`);
     });
   })
