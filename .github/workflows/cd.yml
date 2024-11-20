@@ -8,7 +8,7 @@ on:
 
 jobs:
   check_connection:
-    runs-on: self-hosted, linux, ARM64
+    runs-on: self-hosted
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -27,7 +27,7 @@ jobs:
             exit 1
           fi
   deploy:
-    runs-on: self-hosted, linux, ARM64
+    runs-on: self-hosted
     needs: check_connection
     steps:
       - name: Checkout repository
