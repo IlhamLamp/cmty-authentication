@@ -26,6 +26,9 @@ services:
     ports:
       - "3001:3001"
     environment:
+      APP_PORT: ${APP_PORT}
+      APP_NAME: ${APP_NAME}
+      APP_CLIENT: ${APP_CLIENT}
       DB_HOST: ${DB_HOST}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
