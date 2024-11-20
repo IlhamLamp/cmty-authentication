@@ -7,9 +7,8 @@ on:
       - completed
 
 jobs:
-  build:
-    runs-on: self-hosted
-
+  check_connection:
+    runs-on: [self-hosted, linux, ARM64]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -19,6 +18,20 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Check runner connectivity
+        run: |
+          ping -c 5 google.com
+          if [ $? -ne 0]; then
+            echo "Runner connectivity issue. Please check your network configuration."
+            exit 1
+          fi
+  deploy:
+    runs-on: [self-hosted, linux, ARM64]
+    needs: check_connection
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Create .env file for Docker Compose
         run: |
@@ -41,27 +54,29 @@ jobs:
           echo "MAIL_HOST=${{ secrets.MAIL_HOST }}" >> .env
 
       - name: Verify .env file
-        run: cat .env
+        run: |
+          cat .env
+          echo "Environment variables loaded successfully!"
 
       - name: Pull authentication docker image
-        run: docker pull ${{ secrets.DOCKER_USERNAME }}/authentication:latest
-
-      - name: Remove old authentication container
-        run: docker rm -f authentication-container || true
-
-      - name: Remove old MySQL container
-        run: docker rm -f mysql-container || true
-
-      - name: Remove old images
         run: |
-          echo "Removing old images..."
+          echo "Pulling Docker image..."
+          docker pull ${{ secrets.DOCKER_USERNAME }}/authentication:latest
+          echo "Image pulled successfully!"
+
+      - name: Removing old containers and images
+        run: |
+          echo "Removing old containers and images..."
+          docker rm -f authentication-container mysql-container || true
           docker images -f "dangling=true" -q | xargs --no-run-if-empty docker rmi
+          echo "Cleanup complete!"
 
       - name: Deploy services with Docker Compose
         run: |
           echo "Starting Docker Compose..."
           docker-compose --env-file .env config
           docker-compose --env-file .env up -d --remove-orphans
+          echo "Deployment successful!"
 
       - name: Clean up .env file
         run: rm .env
