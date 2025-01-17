@@ -10,6 +10,7 @@ dotenv.config();
 
 const app: Express = express();
 
+// DUMMY COMMIT
 app.use(
   cors({
     origin: APP_CLIENT,
