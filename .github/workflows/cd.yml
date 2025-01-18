@@ -8,7 +8,7 @@ on:
 
 jobs:
   check_connection:
-    runs-on: [self-hosted, authentication]
+    runs-on: [self-hosted, authentication-service]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -27,7 +27,7 @@ jobs:
             exit 1
           fi
   deploy:
-    runs-on: [self-hosted, authentication]
+    runs-on: [self-hosted, authentication-service]
     needs: check_connection
     steps:
       - name: Checkout repository
