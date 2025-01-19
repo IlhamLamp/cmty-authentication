@@ -15,6 +15,14 @@ export const Login = async (req: express.Request, res: express.Response) => {
         .json({ message: "Invalid email or password", status: 400 });
       return;
     }
+    if (!user.is_verified) {
+      res
+        .status(401)
+        .json({
+          message: "User not verified, please check your email to verified",
+          status: 400,
+        });
+    }
     const isMatch = await comparePassword(password, user.password);
     if (!isMatch) {
       res
