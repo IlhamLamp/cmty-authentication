@@ -16,12 +16,11 @@ export const Login = async (req: express.Request, res: express.Response) => {
       return;
     }
     if (!user.is_verified) {
-      res
-        .status(401)
-        .json({
-          message: "User not verified, please check your email to verified",
-          status: 400,
-        });
+      res.status(401).json({
+        message: "User not verified, please check your email to verified",
+        status: 400,
+      });
+      return;
     }
     const isMatch = await comparePassword(password, user.password);
     if (!isMatch) {
